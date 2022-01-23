@@ -1,6 +1,6 @@
 # Leo
 
-Leo is the smallest Gemini server in the world.
+Leo is the smallest Gemini server in the universe.
 
 # Requirements
 
