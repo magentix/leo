@@ -3,7 +3,7 @@
 $root = __DIR__ . '/';
 
 $socket = stream_socket_server(
-    'tcp://127.0.0.1:1965',
+    'tcp://0:1965',
     $ec,
     $em,
     STREAM_SERVER_BIND|STREAM_SERVER_LISTEN,
