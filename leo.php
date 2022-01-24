@@ -30,8 +30,9 @@ while (true) {
     $url = parse_url(trim(fread($fSocket, 1024)));
     stream_set_blocking($fSocket, false);
 
-    $file = $root . 'capsule' . str_replace('../', '', ($url['path'] ?? '/index.gmi'));
+    $file  = $root . 'capsule' . str_replace('../', '', ($url['path'] ?? '/index.gmi'));
+    $isGmi = substr($file, -3) === 'gmi';
 
-    fwrite($fSocket, is_file($file) ? "20 text/gemini\r\n" . file_get_contents($file) : "51 Not found\r\n");
+    fwrite($fSocket, $isGmi && is_file($file) ? "20 text/gemini\r\n" . file_get_contents($file) : "51 Not found\r\n");
     fclose($fSocket);
 }
