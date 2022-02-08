@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 const ROOT = __DIR__ . '/';
 
 $resource = stream_context_create(
