@@ -26,7 +26,7 @@ while (true) {
     $url = parse_url(trim(fread($fSocket, 1024)));
     stream_set_blocking($fSocket, false);
 
-    fwrite($fSocket, getContent($url));
+    fwrite($fSocket, getContent($url ?: []));
     fclose($fSocket);
 }
 
