@@ -41,7 +41,7 @@ while (true) {
 function getContent(array $url): string
 {
     if (($url['scheme'] ?? '') !== 'gemini') {
-        return "53 Proxy Request Refused\r\n";
+        return "59 bad request\r\n";
     }
 
     $path = $url['path'] ?? '/';
