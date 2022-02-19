@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE);
+
 const ROOT = __DIR__ . '/';
 
 $resource = stream_context_create(
@@ -9,24 +11,18 @@ $resource = stream_context_create(
         'ssl' => [
             'local_cert' => ROOT . 'cert.pem',
             'local_pk' => ROOT . 'key.pem',
-            'passphrase' => 'gemini',
             'allow_self_signed' => true,
             'verify_peer' => false,
         ]
     ]
 );
-$socket = stream_socket_server(address: 'tcp://0:1965', context: $resource);
-stream_socket_enable_crypto($socket, false);
+$socket = stream_socket_server(address: 'tlsv1.3://0:1965', context: $resource);
 
 while (true) {
-    $fSocket = stream_socket_accept($socket, -1);
-
-    stream_set_blocking($fSocket, true);
-    @stream_socket_enable_crypto($fSocket, true, STREAM_CRYPTO_METHOD_TLSv1_3_SERVER);
-    $url = parse_url(trim(fread($fSocket, 1024)));
-    stream_set_blocking($fSocket, false);
-
-    fwrite($fSocket, getContent($url ?: []));
+    if (!($fSocket = stream_socket_accept($socket, -1))) {
+        continue;
+    }
+    fwrite($fSocket, getContent(parse_url(trim(fread($fSocket, 1024) ?: '')) ?: []));
     fclose($fSocket);
 }
 

@@ -9,15 +9,13 @@ Leo is the smallest Gemini server in the universe.
 
 # Configuration
 
-Generate a self-signed certificate with **gemini** as passphrase and your server FQDN as common name:
+Generate a self-signed certificate with your server FQDN as common name:
 
 ```bash
-openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
+openssl req -nodes -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
 ```
 
 ```
-Enter PEM pass phrase: gemini
-Verifying - Enter PEM pass phrase: gemini
 Country Name (2 letter code) [AU]: US
 State or Province Name (full name) [Some-State]: Washington
 Locality Name (eg, city) []: Olympia
