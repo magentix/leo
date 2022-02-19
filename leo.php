@@ -44,13 +44,13 @@ function getContent(array $url): string
         return "59 bad request\r\n";
     }
 
-    $path = $url['path'] ?? '/';
-    if (str_ends_with($path, '/')) {
-        $path .= 'index.gmi';
+    $path = $url['path'] ?? '/index.gmi';
+    if (!str_ends_with($path, '.gmi')) {
+        $path = rtrim($path, '/') . '/index.gmi';
     }
+    
     $file = ROOT . 'capsule' . str_replace('../', '', $path);
-
-    if (!str_ends_with($file, 'gmi') || !file_exists($file)) {
+    if (!file_exists($file)) {
         return "51 Not found\r\n";
     }
 
