@@ -32,7 +32,7 @@ while (true) {
  * @param string[] $url
  * $url = [
  *     'scheme' => (string) scheme name (gemini)
- *     'host'   => (string) host name (gemini.circumlunar.space)
+ *     'host'   => (string) host name (magentix.space)
  *     'path'   => (string) requested page (/about.gmi)
  * ]
  *
