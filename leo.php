@@ -19,11 +19,10 @@ $resource = stream_context_create(
 $socket = stream_socket_server(address: 'tlsv1.3://0:1965', context: $resource);
 
 while (true) {
-    if (!($fSocket = stream_socket_accept($socket, -1))) {
-        continue;
+    if ($fSocket = stream_socket_accept($socket, -1)) {
+        fwrite($fSocket, getContent(parse_url(trim(fread($fSocket, 512) ?: '')) ?: []));
+        fclose($fSocket);
     }
-    fwrite($fSocket, getContent(parse_url(trim(fread($fSocket, 1024) ?: '')) ?: []));
-    fclose($fSocket);
 }
 
 /**
@@ -44,13 +43,11 @@ function getContent(array $url): string
         return "59 bad request\r\n";
     }
 
-    $path = $url['path'] ?? '/index.gmi';
-    if (!str_ends_with($path, '.gmi')) {
+    if (!str_ends_with($path = $url['path'] ?? '/index.gmi', '.gmi')) {
         $path = rtrim($path, '/') . '/index.gmi';
     }
-    
-    $file = ROOT . 'capsule' . str_replace('../', '', $path);
-    if (!file_exists($file)) {
+
+    if (!file_exists($file = ROOT . 'capsule' . str_replace('../', '', $path))) {
         return "51 Not found\r\n";
     }
 
